@@ -20,12 +20,15 @@ color ivoryBlack = #2C2C2C;
 //Variables
 color selectedColor = ivoryBlack;
 color[] palette;
+float sliderY;
+float weight;
 void setup() {
   palette = new color[]{warmYellow, cyan, brightRed, coolYellow, coolBlue, brightOrange, warmGreen, warmBlue, pink, coolGreen, white, ivoryBlack};
 
 
+weight = map(sliderY, 350,450,1,10);
 
-
+sliderY=400;
   size(1000, 800);
 }
 
@@ -33,6 +36,14 @@ void setup() {
 void draw() {
   background (white);
   strokeWeight(2.5);
+  //StrokeWeight Slider
+  textSize(15);
+ textAlign(CENTER, CENTER);
+text("Stroke Weight",80,325);
+  line(80,350,80,450);
+  text("low", 55,350);
+  text("high", 55,450);
+  circle(80,sliderY,15);
   //Left Panel
   fill(100, 70);
   rect(0, 0, 200, 800);
@@ -43,6 +54,7 @@ void draw() {
 
     int x = 35 + (i * (25 + 15));
     int y = 50;
+    checkHover(x,y);
     fill(palette[i]);
     rect(x, y, 25, 25, 6.7);
   }
@@ -52,6 +64,7 @@ void draw() {
     int x = 35 + ((i-3) * (25 + 15));
     int y = 80;
     fill(palette[i]);
+    checkHover(x,y);
     rect(x, y, 25, 25, 6.7);
   }
   for (int i = 6; i < 9; i++) {
@@ -59,6 +72,7 @@ void draw() {
     int x = 35 + ((i-6) * (25 + 15));
     int y = 110;
     fill(palette[i]);
+    checkHover(x,y);
     rect(x, y, 25, 25, 6.7);
   }
   for (int i = 9; i < 12; i++) {
@@ -66,7 +80,9 @@ void draw() {
     int x = 35 + ((i-9) * (25 + 15));
     int y = 140;
     fill(palette[i]);
+    checkHover(x,y);
     rect(x, y, 25, 25, 6.7);
+    stroke(0);
   }
 
   //palette panel
@@ -74,11 +90,11 @@ void draw() {
   textSize(15);
   textAlign(CENTER, CENTER);
   text("Click To Pick", 80, 15);
-  fill(255, 80);
+  fill(255, 50);
   square(20, 35, 140);
   //indicator
   fill(selectedColor);
-  rect(50, 225, 30,30,50);
+  rect(65, 225, 30,30,50);
   fill(0);
 
 
@@ -86,9 +102,11 @@ void draw() {
 }
 
 void mouseDragged() {
+  controlSlider();
 }
 
 void mousePressed() {
+  controlSlider();
   for (int i = 0; i < 12; i++) {
     int col = i % 3;
     int row = i / 3;
@@ -101,4 +119,19 @@ void mousePressed() {
       selectedColor = palette[i];
     }
   }
+}
+void checkHover(float x, float y){
+ if (mouseX > x && mouseX < x + 25 && mouseY > y && mouseY < y + 25) {
+    stroke(255); // white outline
+  } else {
+    stroke(0);   // black outline
+  }
+}
+void controlSlider(){
+
+  if (mouseX>50 && mouseX <110 && mouseY > 350 && mouseY < 450){
+  sliderY = mouseY;
+  }
+  weight = map(sliderY, 100,700, 0, 255);
+
 }
